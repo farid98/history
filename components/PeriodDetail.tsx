@@ -1,13 +1,37 @@
 'use client'
 
 import React, { useEffect, useCallback } from 'react'
-import type { TimelinePeriod, Civilization, ScienceInvention } from '@/lib/timeline'
+import type { TimelinePeriod, Civilization, ScienceInvention, Philosophy } from '@/lib/timeline'
 import { formatYearRange } from '@/lib/format'
 import MDXContent from './MDXContent'
 
 interface PeriodDetailProps {
   period: TimelinePeriod & { content: string }
   onClose: () => void
+}
+
+function PhilosophyBlock({ items }: { items: Philosophy[] }) {
+  return (
+    <div className="mb-8 pb-6 border-b border-[#E8E0D5]">
+      <h3 className="text-[10px] font-sans font-semibold tracking-widest uppercase mb-3 text-[#5B4A8A]">
+        Philosophy &amp; Thought
+      </h3>
+      <div className="flex flex-col gap-3">
+        {items.map((item, i) => (
+          <div key={i} className="rounded-md border border-[#DDD5F0] bg-[#F8F6FC] p-3">
+            <div className="flex items-start gap-2">
+              <div className="flex-shrink-0 w-1 rounded-full self-stretch bg-[#5B4A8A] opacity-60" />
+              <div>
+                <p className="text-[13px] font-sans font-semibold text-[#2C2C2C]">{item.name}</p>
+                <p className="text-[12px] font-sans text-[#5B4A8A] font-medium mt-0.5">{item.summary}</p>
+                <p className="text-[12px] font-serif text-[#555] leading-relaxed mt-1.5">{item.detail}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function ScienceBlock({ items }: { items: ScienceInvention[] }) {
@@ -159,29 +183,10 @@ export default function PeriodDetail({ period, onClose }: PeriodDetailProps) {
           {period.scienceAndInventions && period.scienceAndInventions.length > 0 && (
             <ScienceBlock items={period.scienceAndInventions} />
           )}
-          <MDXContent content={period.content} />
-
-          {/* Related periods */}
-          {period.relatedPeriods && period.relatedPeriods.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-[#E8E0D5]">
-              <h3 className="font-sans text-xs font-semibold tracking-widest uppercase text-[#888] mb-3">
-                Related Periods
-              </h3>
-              <div className="flex flex-col gap-2">
-                {period.relatedPeriods.map((rel) => (
-                  <div
-                    key={`${rel.level}-${rel.slug}`}
-                    className="px-3 py-2 rounded-md bg-[#FAF8F5] border border-[#E8E0D5] text-sm font-serif text-[#2C2C2C]"
-                  >
-                    <span className="text-[10px] font-sans text-[#888] uppercase tracking-wider">
-                      {rel.level}
-                    </span>
-                    <p className="font-medium">{rel.title}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {period.philosophy && period.philosophy.length > 0 && (
+            <PhilosophyBlock items={period.philosophy} />
           )}
+          <MDXContent content={period.content} />
         </div>
       </aside>
     </>

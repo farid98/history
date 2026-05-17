@@ -56,6 +56,7 @@ export default function TimelineExplorer() {
   const [expandKeyEvents, setExpandKeyEvents] = useState(false)
   const [expandCivilizations, setExpandCivilizations] = useState(false)
   const [expandScience, setExpandScience] = useState(false)
+  const [expandPhilosophy, setExpandPhilosophy] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const fetchPeriods = useCallback(async () => {
@@ -114,6 +115,12 @@ export default function TimelineExplorer() {
           color="#2C4A7C"
           onClick={() => setExpandScience((v) => !v)}
         />
+        <ToggleButton
+          label="Philosophy"
+          active={expandPhilosophy}
+          color="#5B4A8A"
+          onClick={() => setExpandPhilosophy((v) => !v)}
+        />
         {!loading && (
           <span className="ml-auto text-xs font-sans text-[#bbb]">
             {periods.length} periods · 1,000-year spans
@@ -155,6 +162,7 @@ export default function TimelineExplorer() {
                     expandKeyEvents={expandKeyEvents}
                     expandCivilizations={expandCivilizations}
                     expandScience={expandScience}
+                    expandPhilosophy={expandPhilosophy}
                   />
                 </div>
               ))}

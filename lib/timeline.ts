@@ -18,6 +18,12 @@ export interface ScienceInvention {
   detail: string
 }
 
+export interface Philosophy {
+  name: string
+  summary: string
+  detail: string
+}
+
 export interface TimelinePeriod {
   id: string
   slug: string
@@ -34,6 +40,7 @@ export interface TimelinePeriod {
   keyEvents?: KeyEvent[]
   civilizations?: Civilization[]
   scienceAndInventions?: ScienceInvention[]
+  philosophy?: Philosophy[]
   relatedPeriods?: { slug: string; level: string; title: string }[]
   content?: string
 }
@@ -96,6 +103,7 @@ export function getPeriodsByLevel(
       keyEvents: parseKeyEvents(content),
       civilizations: (data.civilizations as Civilization[]) ?? [],
       scienceAndInventions: (data.scienceAndInventions as ScienceInvention[]) ?? [],
+      philosophy: (data.philosophy as Philosophy[]) ?? [],
       relatedPeriods: (data.relatedPeriods as TimelinePeriod['relatedPeriods']) ?? [],
     }
   })
@@ -135,6 +143,7 @@ export function getPeriodBySlug(
     era: (data.era as string) ?? '',
     civilizations: (data.civilizations as Civilization[]) ?? [],
     scienceAndInventions: (data.scienceAndInventions as ScienceInvention[]) ?? [],
+    philosophy: (data.philosophy as Philosophy[]) ?? [],
     relatedPeriods: (data.relatedPeriods as TimelinePeriod['relatedPeriods']) ?? [],
     content,
   }

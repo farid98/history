@@ -10,6 +10,7 @@ interface TimelineCardProps {
   expandKeyEvents?: boolean
   expandCivilizations?: boolean
   expandScience?: boolean
+  expandPhilosophy?: boolean
 }
 
 function ImportanceDots({ importance }: { importance: number }) {
@@ -80,11 +81,12 @@ function CardSection({ title, color, externalOpen, children }: CardSectionProps)
   )
 }
 
-export default function TimelineCard({ period, onClick, expandKeyEvents, expandCivilizations, expandScience }: TimelineCardProps) {
+export default function TimelineCard({ period, onClick, expandKeyEvents, expandCivilizations, expandScience, expandPhilosophy }: TimelineCardProps) {
   const yearRange = formatYearRange(period)
   const hasKeyEvents = period.keyEvents && period.keyEvents.length > 0
   const hasCivilizations = period.civilizations && period.civilizations.length > 0
   const hasScience = period.scienceAndInventions && period.scienceAndInventions.length > 0
+  const hasPhilosophy = period.philosophy && period.philosophy.length > 0
 
   return (
     <div
@@ -158,6 +160,19 @@ export default function TimelineCard({ period, onClick, expandKeyEvents, expandC
           <CardSection title="Science & Inventions" color="#2C4A7C" externalOpen={expandScience}>
             <ul className="flex flex-col gap-1.5">
               {period.scienceAndInventions!.map((item, i) => (
+                <li key={i} className="text-[12px] font-sans text-[#444] leading-snug">
+                  <span className="font-semibold text-[#2C2C2C]">{item.name}: </span>
+                  {item.summary}
+                </li>
+              ))}
+            </ul>
+          </CardSection>
+        )}
+
+        {hasPhilosophy && (
+          <CardSection title="Philosophy & Thought" color="#5B4A8A" externalOpen={expandPhilosophy}>
+            <ul className="flex flex-col gap-1.5">
+              {period.philosophy!.map((item, i) => (
                 <li key={i} className="text-[12px] font-sans text-[#444] leading-snug">
                   <span className="font-semibold text-[#2C2C2C]">{item.name}: </span>
                   {item.summary}
