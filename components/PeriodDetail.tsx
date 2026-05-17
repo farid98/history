@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useCallback } from 'react'
-import type { TimelinePeriod, Civilization, ScienceInvention, Philosophy } from '@/lib/timeline'
+import React, { useEffect, useCallback, useState } from 'react'
+import type { TimelinePeriod, Civilization, ScienceInvention, Philosophy, ArtArchitecture, WarConflict, TradeEconomy } from '@/lib/timeline'
 import { formatYearRange } from '@/lib/format'
 import MDXContent from './MDXContent'
 
@@ -10,51 +10,153 @@ interface PeriodDetailProps {
   onClose: () => void
 }
 
-function PhilosophyBlock({ items }: { items: Philosophy[] }) {
+interface DetailItem {
+  name: string
+  summary: string
+  detail: string
+}
+
+interface CollapsibleSectionProps {
+  label: string
+  accentColor: string
+  borderColor: string
+  bgColor: string
+  items: DetailItem[]
+}
+
+function CollapsibleSection({ label, accentColor, borderColor, bgColor, items }: CollapsibleSectionProps) {
+  const [expanded, setExpanded] = useState<Set<number>>(new Set())
+
+  const allExpanded = expanded.size === items.length
+  const anyExpanded = expanded.size > 0
+
+  function toggleItem(i: number) {
+    setExpanded(prev => {
+      const next = new Set(prev)
+      next.has(i) ? next.delete(i) : next.add(i)
+      return next
+    })
+  }
+
+  function toggleAll() {
+    setExpanded(allExpanded ? new Set() : new Set(items.map((_, i) => i)))
+  }
+
   return (
     <div className="mb-8 pb-6 border-b border-[#E8E0D5]">
-      <h3 className="text-[10px] font-sans font-semibold tracking-widest uppercase mb-3 text-[#5B4A8A]">
-        Philosophy &amp; Thought
-      </h3>
-      <div className="flex flex-col gap-3">
-        {items.map((item, i) => (
-          <div key={i} className="rounded-md border border-[#DDD5F0] bg-[#F8F6FC] p-3">
-            <div className="flex items-start gap-2">
-              <div className="flex-shrink-0 w-1 rounded-full self-stretch bg-[#5B4A8A] opacity-60" />
-              <div>
-                <p className="text-[13px] font-sans font-semibold text-[#2C2C2C]">{item.name}</p>
-                <p className="text-[12px] font-sans text-[#5B4A8A] font-medium mt-0.5">{item.summary}</p>
-                <p className="text-[12px] font-serif text-[#555] leading-relaxed mt-1.5">{item.detail}</p>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-[10px] font-sans font-semibold tracking-widest uppercase" style={{ color: accentColor }}>
+          {label}
+        </h3>
+        <button
+          onClick={toggleAll}
+          className="text-[10px] font-sans font-medium tracking-wide hover:opacity-80 transition-opacity"
+          style={{ color: accentColor }}
+        >
+          {allExpanded ? 'Collapse all' : anyExpanded ? 'Expand all' : 'Expand all'}
+        </button>
+      </div>
+      <div className="flex flex-col gap-2">
+        {items.map((item, i) => {
+          const open = expanded.has(i)
+          return (
+            <button
+              key={i}
+              onClick={() => toggleItem(i)}
+              className="rounded-md border text-left w-full transition-colors"
+              style={{ borderColor, backgroundColor: bgColor }}
+            >
+              <div className="flex items-start gap-2 p-3">
+                <div
+                  className="flex-shrink-0 w-1 rounded-full self-stretch opacity-60"
+                  style={{ backgroundColor: accentColor }}
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-[13px] font-sans font-semibold text-[#2C2C2C]">{item.name}</p>
+                    <svg
+                      className="flex-shrink-0 w-3.5 h-3.5 transition-transform duration-200"
+                      style={{ color: accentColor, transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <p className="text-[12px] font-sans font-medium mt-0.5" style={{ color: accentColor }}>
+                    {item.summary}
+                  </p>
+                  {open && (
+                    <p className="text-[12px] font-serif text-[#555] leading-relaxed mt-2 border-t pt-2" style={{ borderColor }}>
+                      {item.detail}
+                    </p>
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            </button>
+          )
+        })}
       </div>
     </div>
   )
 }
 
+function PhilosophyBlock({ items }: { items: Philosophy[] }) {
+  return (
+    <CollapsibleSection
+      label="Philosophy & Thought"
+      accentColor="#5B4A8A"
+      borderColor="#DDD5F0"
+      bgColor="#F8F6FC"
+      items={items}
+    />
+  )
+}
+
 function ScienceBlock({ items }: { items: ScienceInvention[] }) {
   return (
-    <div className="mb-8 pb-6 border-b border-[#E8E0D5]">
-      <h3 className="text-[10px] font-sans font-semibold tracking-widest uppercase mb-3 text-[#2C4A7C]">
-        Science &amp; Inventions
-      </h3>
-      <div className="flex flex-col gap-3">
-        {items.map((item, i) => (
-          <div key={i} className="rounded-md border border-[#D4E0F0] bg-[#F4F7FB] p-3">
-            <div className="flex items-start gap-2">
-              <div className="flex-shrink-0 w-1 rounded-full self-stretch bg-[#2C4A7C] opacity-60" />
-              <div>
-                <p className="text-[13px] font-sans font-semibold text-[#2C2C2C]">{item.name}</p>
-                <p className="text-[12px] font-sans text-[#2C4A7C] font-medium mt-0.5">{item.summary}</p>
-                <p className="text-[12px] font-serif text-[#555] leading-relaxed mt-1.5">{item.detail}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <CollapsibleSection
+      label="Science & Inventions"
+      accentColor="#2C4A7C"
+      borderColor="#D4E0F0"
+      bgColor="#F4F7FB"
+      items={items}
+    />
+  )
+}
+
+function ArtArchitectureBlock({ items }: { items: ArtArchitecture[] }) {
+  return (
+    <CollapsibleSection
+      label="Art & Architecture"
+      accentColor="#9C5A1D"
+      borderColor="#F0DCC8"
+      bgColor="#FDF7F2"
+      items={items}
+    />
+  )
+}
+
+function WarConflictBlock({ items }: { items: WarConflict[] }) {
+  return (
+    <CollapsibleSection
+      label="War & Conflict"
+      accentColor="#8B2222"
+      borderColor="#EDD0D0"
+      bgColor="#FDF4F4"
+      items={items}
+    />
+  )
+}
+
+function TradeEconomyBlock({ items }: { items: TradeEconomy[] }) {
+  return (
+    <CollapsibleSection
+      label="Trade & Economy"
+      accentColor="#2D6A4F"
+      borderColor="#C8E6D8"
+      bgColor="#F2FAF6"
+      items={items}
+    />
   )
 }
 
@@ -179,6 +281,15 @@ export default function PeriodDetail({ period, onClose }: PeriodDetailProps) {
         <div className="flex-1 overflow-y-auto px-6 py-6">
           {period.civilizations && period.civilizations.length > 0 && (
             <CivilizationsBlock civilizations={period.civilizations} color={period.color} />
+          )}
+          {period.warAndConflict && period.warAndConflict.length > 0 && (
+            <WarConflictBlock items={period.warAndConflict} />
+          )}
+          {period.tradeAndEconomy && period.tradeAndEconomy.length > 0 && (
+            <TradeEconomyBlock items={period.tradeAndEconomy} />
+          )}
+          {period.artAndArchitecture && period.artAndArchitecture.length > 0 && (
+            <ArtArchitectureBlock items={period.artAndArchitecture} />
           )}
           {period.scienceAndInventions && period.scienceAndInventions.length > 0 && (
             <ScienceBlock items={period.scienceAndInventions} />

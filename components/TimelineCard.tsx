@@ -11,6 +11,9 @@ interface TimelineCardProps {
   expandCivilizations?: boolean
   expandScience?: boolean
   expandPhilosophy?: boolean
+  expandArt?: boolean
+  expandWar?: boolean
+  expandTrade?: boolean
 }
 
 function ImportanceDots({ importance }: { importance: number }) {
@@ -81,12 +84,15 @@ function CardSection({ title, color, externalOpen, children }: CardSectionProps)
   )
 }
 
-export default function TimelineCard({ period, onClick, expandKeyEvents, expandCivilizations, expandScience, expandPhilosophy }: TimelineCardProps) {
+export default function TimelineCard({ period, onClick, expandKeyEvents, expandCivilizations, expandScience, expandPhilosophy, expandArt, expandWar, expandTrade }: TimelineCardProps) {
   const yearRange = formatYearRange(period)
   const hasKeyEvents = period.keyEvents && period.keyEvents.length > 0
   const hasCivilizations = period.civilizations && period.civilizations.length > 0
   const hasScience = period.scienceAndInventions && period.scienceAndInventions.length > 0
   const hasPhilosophy = period.philosophy && period.philosophy.length > 0
+  const hasArt = period.artAndArchitecture && period.artAndArchitecture.length > 0
+  const hasWar = period.warAndConflict && period.warAndConflict.length > 0
+  const hasTrade = period.tradeAndEconomy && period.tradeAndEconomy.length > 0
 
   return (
     <div
@@ -173,6 +179,45 @@ export default function TimelineCard({ period, onClick, expandKeyEvents, expandC
           <CardSection title="Philosophy & Thought" color="#5B4A8A" externalOpen={expandPhilosophy}>
             <ul className="flex flex-col gap-1.5">
               {period.philosophy!.map((item, i) => (
+                <li key={i} className="text-[12px] font-sans text-[#444] leading-snug">
+                  <span className="font-semibold text-[#2C2C2C]">{item.name}: </span>
+                  {item.summary}
+                </li>
+              ))}
+            </ul>
+          </CardSection>
+        )}
+
+        {hasArt && (
+          <CardSection title="Art & Architecture" color="#9C5A1D" externalOpen={expandArt}>
+            <ul className="flex flex-col gap-1.5">
+              {period.artAndArchitecture!.map((item, i) => (
+                <li key={i} className="text-[12px] font-sans text-[#444] leading-snug">
+                  <span className="font-semibold text-[#2C2C2C]">{item.name}: </span>
+                  {item.summary}
+                </li>
+              ))}
+            </ul>
+          </CardSection>
+        )}
+
+        {hasWar && (
+          <CardSection title="War & Conflict" color="#8B2222" externalOpen={expandWar}>
+            <ul className="flex flex-col gap-1.5">
+              {period.warAndConflict!.map((item, i) => (
+                <li key={i} className="text-[12px] font-sans text-[#444] leading-snug">
+                  <span className="font-semibold text-[#2C2C2C]">{item.name}: </span>
+                  {item.summary}
+                </li>
+              ))}
+            </ul>
+          </CardSection>
+        )}
+
+        {hasTrade && (
+          <CardSection title="Trade & Economy" color="#2D6A4F" externalOpen={expandTrade}>
+            <ul className="flex flex-col gap-1.5">
+              {period.tradeAndEconomy!.map((item, i) => (
                 <li key={i} className="text-[12px] font-sans text-[#444] leading-snug">
                   <span className="font-semibold text-[#2C2C2C]">{item.name}: </span>
                   {item.summary}

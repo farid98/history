@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import TimelineExplorer from '@/components/TimelineExplorer'
 
 export default function HomePage() {
@@ -14,7 +15,18 @@ export default function HomePage() {
               4000 BCE – 2026 CE &nbsp;·&nbsp; Three zoom levels
             </p>
           </div>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-4">
+            <Link
+              href="/geography"
+              className="flex items-center gap-1.5 text-xs font-sans font-semibold text-[#555] hover:text-[#2C2C2C] border border-[#E8E0D5] bg-white hover:bg-[#F5EFE8] px-3 py-1.5 rounded-md transition-colors shadow-sm"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+              Place Names
+            </Link>
+          </div>
+          <div className="hidden md:flex items-center gap-2">
             <span className="hidden md:flex items-center gap-1.5 text-xs font-sans text-[#888]">
               <span className="w-2 h-2 rounded-full bg-[#8B7355] inline-block" />
               Ancient

@@ -24,6 +24,24 @@ export interface Philosophy {
   detail: string
 }
 
+export interface ArtArchitecture {
+  name: string
+  summary: string
+  detail: string
+}
+
+export interface WarConflict {
+  name: string
+  summary: string
+  detail: string
+}
+
+export interface TradeEconomy {
+  name: string
+  summary: string
+  detail: string
+}
+
 export interface TimelinePeriod {
   id: string
   slug: string
@@ -41,6 +59,9 @@ export interface TimelinePeriod {
   civilizations?: Civilization[]
   scienceAndInventions?: ScienceInvention[]
   philosophy?: Philosophy[]
+  artAndArchitecture?: ArtArchitecture[]
+  warAndConflict?: WarConflict[]
+  tradeAndEconomy?: TradeEconomy[]
   relatedPeriods?: { slug: string; level: string; title: string }[]
   content?: string
 }
@@ -104,6 +125,9 @@ export function getPeriodsByLevel(
       civilizations: (data.civilizations as Civilization[]) ?? [],
       scienceAndInventions: (data.scienceAndInventions as ScienceInvention[]) ?? [],
       philosophy: (data.philosophy as Philosophy[]) ?? [],
+      artAndArchitecture: (data.artAndArchitecture as ArtArchitecture[]) ?? [],
+      warAndConflict: (data.warAndConflict as WarConflict[]) ?? [],
+      tradeAndEconomy: (data.tradeAndEconomy as TradeEconomy[]) ?? [],
       relatedPeriods: (data.relatedPeriods as TimelinePeriod['relatedPeriods']) ?? [],
     }
   })
@@ -144,6 +168,9 @@ export function getPeriodBySlug(
     civilizations: (data.civilizations as Civilization[]) ?? [],
     scienceAndInventions: (data.scienceAndInventions as ScienceInvention[]) ?? [],
     philosophy: (data.philosophy as Philosophy[]) ?? [],
+    artAndArchitecture: (data.artAndArchitecture as ArtArchitecture[]) ?? [],
+    warAndConflict: (data.warAndConflict as WarConflict[]) ?? [],
+    tradeAndEconomy: (data.tradeAndEconomy as TradeEconomy[]) ?? [],
     relatedPeriods: (data.relatedPeriods as TimelinePeriod['relatedPeriods']) ?? [],
     content,
   }

@@ -57,6 +57,9 @@ export default function TimelineExplorer() {
   const [expandCivilizations, setExpandCivilizations] = useState(false)
   const [expandScience, setExpandScience] = useState(false)
   const [expandPhilosophy, setExpandPhilosophy] = useState(false)
+  const [expandArt, setExpandArt] = useState(false)
+  const [expandWar, setExpandWar] = useState(false)
+  const [expandTrade, setExpandTrade] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const fetchPeriods = useCallback(async () => {
@@ -121,6 +124,24 @@ export default function TimelineExplorer() {
           color="#5B4A8A"
           onClick={() => setExpandPhilosophy((v) => !v)}
         />
+        <ToggleButton
+          label="Art & Architecture"
+          active={expandArt}
+          color="#9C5A1D"
+          onClick={() => setExpandArt((v) => !v)}
+        />
+        <ToggleButton
+          label="War & Conflict"
+          active={expandWar}
+          color="#8B2222"
+          onClick={() => setExpandWar((v) => !v)}
+        />
+        <ToggleButton
+          label="Trade & Economy"
+          active={expandTrade}
+          color="#2D6A4F"
+          onClick={() => setExpandTrade((v) => !v)}
+        />
         {!loading && (
           <span className="ml-auto text-xs font-sans text-[#bbb]">
             {periods.length} periods · 1,000-year spans
@@ -163,6 +184,9 @@ export default function TimelineExplorer() {
                     expandCivilizations={expandCivilizations}
                     expandScience={expandScience}
                     expandPhilosophy={expandPhilosophy}
+                    expandArt={expandArt}
+                    expandWar={expandWar}
+                    expandTrade={expandTrade}
                   />
                 </div>
               ))}
