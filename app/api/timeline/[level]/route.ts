@@ -6,9 +6,9 @@ const VALID_LEVELS: Level[] = ['millennium', '500-year', 'century']
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { level: string } }
+  { params }: { params: Promise<{ level: string }> }
 ) {
-  const { level } = params
+  const { level } = await params
 
   if (!VALID_LEVELS.includes(level as Level)) {
     return NextResponse.json(

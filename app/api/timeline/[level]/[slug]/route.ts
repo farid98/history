@@ -3,9 +3,9 @@ import { getPeriodBySlug } from '@/lib/timeline'
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { level: string; slug: string } }
+  { params }: { params: Promise<{ level: string; slug: string }> }
 ) {
-  const { level, slug } = params
+  const { level, slug } = await params
 
   if (!level || !slug) {
     return NextResponse.json({ error: 'Missing level or slug' }, { status: 400 })
